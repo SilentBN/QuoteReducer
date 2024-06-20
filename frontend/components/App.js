@@ -1,6 +1,7 @@
 import React from "react"; // 👈 you'll need the reducer hook
 import Quotes from "./Quotes";
 import QuoteForm from "./QuoteForm";
+import { useReducer } from "react"; // 👈 you'll need the reducer hook
 
 // 👇 these are the types of actions that can change state
 const CREATE_QUOTE = "CREATE_QUOTE";
@@ -11,28 +12,32 @@ const TOGGLE_VISIBILITY = "TOGGLE_VISIBILITY"; // 👈 toggles whether to show a
 
 let id = 1;
 const getNextId = () => id++; // 👈 this is a helper to create new quotes
-const quotes = [
-  {
-    id: getNextId(),
-    quoteText: "Don't cry because it's over, smile because it happened.",
-    authorName: "Dr. Seuss",
-    apocryphal: false,
-  },
-  {
-    id: getNextId(),
-    quoteText: "So many books, so little time.",
-    authorName: "Frank Zappa",
-    apocryphal: false,
-  },
-  {
-    id: getNextId(),
-    quoteText: "Be yourself; everyone else is already taken.",
-    authorName: "Oscar Wilde",
-    apocryphal: false,
-  },
-];
 
 // 👇 create your initial state object here
+const initialState = {
+  quotes: [
+    {
+      id: getNextId(),
+      quoteText: "Don't cry because it's over, smile because it happened.",
+      authorName: "Dr. Seuss",
+      apocryphal: false,
+    },
+    {
+      id: getNextId(),
+      quoteText: "So many books, so little time.",
+      authorName: "Frank Zappa",
+      apocryphal: false,
+    },
+    {
+      id: getNextId(),
+      quoteText: "Be yourself; everyone else is already taken.",
+      authorName: "Oscar Wilde",
+      apocryphal: false,
+    },
+  ],
+  displayAllQuotes: true,
+  highlightedQuote: null,
+};
 
 const reducer = (state, action) => {
   // 👇 implement your reducer here using the action types above
