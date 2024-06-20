@@ -40,7 +40,44 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
-  // 👇 implement your reducer here using the action types above
+  switch (action.type) {
+    case CREATE_QUOTE:
+      return {
+        ...state,
+        quotes: [...state.quotes, action.payload],
+      };
+    case DELETE_QUOTE:
+      return {
+        ...state,
+        quotes: state.quotes.filter((quote) => quote.id !== action.payload),
+        highlightedQuote:
+          state.highlightedQuote === action.payload
+            ? null
+            : state.highlightedQuote,
+      };
+    case EDIT_QUOTE_AUTHENTICITY:
+      return {
+        ...state,
+        quotes: state.quotes.map((quote) =>
+          quote.id === action.payload
+            ? { ...quote, apocryphal: !quote.apocryphal }
+            : quote
+        ),
+      };
+    case SET_HIGHLIGHTED_QUOTE:
+      return {
+        ...state,
+        highlightedQuote:
+          state.highlightedQuote === action.payload ? null : action.payload,
+      };
+    case TOGGLE_VISIBILITY:
+      return {
+        ...state,
+        displayAllQuotes: !state.displayAllQuotes,
+      };
+    default:
+      return state;
+  }
 };
 
 export default function App() {
