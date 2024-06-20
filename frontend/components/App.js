@@ -82,30 +82,50 @@ const reducer = (state, action) => {
 
 export default function App() {
   // 👇 use the reducer hook to spin up state and dispatch
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const createQuote = ({ authorName, quoteText }) => {
     // 👇 use the helper function above to create a new quote
     // 👇 and dispatch it over to the reducer
+    dispatch({
+      type: CREATE_QUOTE,
+      payload: {
+        id: getNextId(),
+        authorName,
+        quoteText,
+        apocryphal: false,
+      },
+    });
   };
   const deleteQuote = (id) => {
     // 👇 implement
+    dispatch({ type: DELETE_QUOTE, payload: id });
   };
   const editQuoteAuthenticity = (id) => {
     // 👇 implement
+    dispatch({ type: EDIT_QUOTE_AUTHENTICITY, payload: id });
   };
   const setHighlightedQuote = (id) => {
     // 👇 implement
+    dispatch({ type: SET_HIGHLIGHTED_QUOTE, payload: id });
   };
   const toggleVisibility = () => {
     // 👇 implement
+    dispatch({ type: TOGGLE_VISIBILITY });
   };
 
   return (
     <div id="mp">
       <h2>Module Project</h2>
       <Quotes
-        quotes={quotes}
+        quotes={state.quotes}
         // 👇 lots of props are missing! Check the Quotes component
+        highlightedQuote={state.highlightedQuote}
+        displayAllQuotes={state.displayAllQuotes}
+        deleteQuote={deleteQuote}
+        editQuoteAuthenticity={editQuoteAuthenticity}
+        setHighlightedQuote={setHighlightedQuote}
+        toggleVisibility={toggleVisibility}
       />
       <QuoteForm createQuote={createQuote} />
     </div>
