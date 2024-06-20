@@ -39,22 +39,27 @@ const initialState = {
   highlightedQuote: null,
 };
 
+// Reducer function. Taking STATE and ACTION as parameters
 const reducer = (state, action) => {
+  // Using switch statement to handle different action types.
   switch (action.type) {
+    // CREATE_QUOTE, returning a new state object with the new quote added to the quotes array.
     case CREATE_QUOTE:
       return {
         ...state,
         quotes: [...state.quotes, action.payload],
       };
+    // DELETE_QUOTE, returning a new state object with the quote removed from the quotes array.
     case DELETE_QUOTE:
       return {
         ...state,
-        quotes: state.quotes.filter((quote) => quote.id !== action.payload),
+        quotes: state.quotes.filter((quote) => quote.id !== action.payload), // 👈 filter out the quote with the matching id
         highlightedQuote:
           state.highlightedQuote === action.payload
             ? null
             : state.highlightedQuote,
-      };
+      }; // 👈 if the highlighted quote is the one being deleted, un-highlight it
+    // EDIT_QUOTE_AUTHENTICITY, returning a new state object with the apocryphal property of the quote toggled.
     case EDIT_QUOTE_AUTHENTICITY:
       return {
         ...state,
@@ -63,18 +68,21 @@ const reducer = (state, action) => {
             ? { ...quote, apocryphal: !quote.apocryphal }
             : quote
         ),
-      };
+      }; // 👈 toggle the apocryphal property of the quote with the matching id
+    // SET_HIGHLIGHTED_QUOTE, returning a new state object with the highlightedQuote property set to the quote id or null.
     case SET_HIGHLIGHTED_QUOTE:
       return {
         ...state,
         highlightedQuote:
           state.highlightedQuote === action.payload ? null : action.payload,
       };
+    // TOGGLE_VISIBILITY, returning a new state object with the displayAllQuotes property toggled.
     case TOGGLE_VISIBILITY:
       return {
         ...state,
         displayAllQuotes: !state.displayAllQuotes,
       };
+    // Default case, returning the state as is.
     default:
       return state;
   }
@@ -84,6 +92,7 @@ export default function App() {
   // 👇 use the reducer hook to spin up state and dispatch
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // 👇 This function dispatches a CREATE_QUOTE action with a new quote object.
   const createQuote = ({ authorName, quoteText }) => {
     // 👇 use the helper function above to create a new quote
     // 👇 and dispatch it over to the reducer
@@ -97,18 +106,26 @@ export default function App() {
       },
     });
   };
+
+  // 👇 This function dispatches a DELETE_QUOTE action with the id of the quote to delete.
   const deleteQuote = (id) => {
     // 👇 implement
     dispatch({ type: DELETE_QUOTE, payload: id });
   };
+
+  // 👇 This function dispatches an EDIT_QUOTE_AUTHENTICITY action with the id of the quote to edit.
   const editQuoteAuthenticity = (id) => {
     // 👇 implement
     dispatch({ type: EDIT_QUOTE_AUTHENTICITY, payload: id });
   };
+
+  // 👇 This function dispatches a SET_HIGHLIGHTED_QUOTE action with the id of the quote to highlight.
   const setHighlightedQuote = (id) => {
     // 👇 implement
     dispatch({ type: SET_HIGHLIGHTED_QUOTE, payload: id });
   };
+
+  // 👇 This function dispatches a TOGGLE_VISIBILITY action.
   const toggleVisibility = () => {
     // 👇 implement
     dispatch({ type: TOGGLE_VISIBILITY });
@@ -118,14 +135,14 @@ export default function App() {
     <div id="mp">
       <h2>Module Project</h2>
       <Quotes
-        quotes={state.quotes}
         // 👇 lots of props are missing! Check the Quotes component
-        highlightedQuote={state.highlightedQuote}
-        displayAllQuotes={state.displayAllQuotes}
-        deleteQuote={deleteQuote}
-        editQuoteAuthenticity={editQuoteAuthenticity}
-        setHighlightedQuote={setHighlightedQuote}
-        toggleVisibility={toggleVisibility}
+        quotes={state.quotes} // 👈 pass in the quotes array from state
+        highlightedQuote={state.highlightedQuote} // 👈 pass in the highlightedQuote from state
+        displayAllQuotes={state.displayAllQuotes} // 👈 pass in the displayAllQuotes from state
+        deleteQuote={deleteQuote} // 👈 pass in the deleteQuote function
+        editQuoteAuthenticity={editQuoteAuthenticity} // 👈 pass in the editQuoteAuthenticity function
+        setHighlightedQuote={setHighlightedQuote} // 👈 pass in the setHighlightedQuote function
+        toggleVisibility={toggleVisibility} // 👈 pass in the toggleVisibility function
       />
       <QuoteForm createQuote={createQuote} />
     </div>
