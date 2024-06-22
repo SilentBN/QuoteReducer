@@ -1,7 +1,7 @@
 import React from "react"; // 👈 you'll need the reducer hook
 import Quotes from "./Quotes";
 import QuoteForm from "./QuoteForm";
-import { useReducer } from "react"; // 👈 you'll need the reducer hook
+import { useReducer } from "react"; // 👈 reducer hook
 
 // 👇 these are the types of actions that can change state
 const CREATE_QUOTE = "CREATE_QUOTE";
